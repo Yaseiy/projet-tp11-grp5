@@ -1,0 +1,6 @@
+def plateau(grille):
+    for i in range(3):
+            ligne = []
+            for j in range(3):
+                ligne.append('-')
+            grille.append(ligne)
