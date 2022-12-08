@@ -1,6 +1,29 @@
-def plateau(grille):
-    for i in range(3):
-            ligne = []
-            for j in range(3):
-                ligne.append('-')
-            grille.append(ligne)
+def plateau(variante) :
+    grille = []
+    if variante == '3' :
+        for i in range(3):
+                ligne = []
+                for j in range(3):
+                    ligne.append('0')
+                grille.append(ligne)
+    elif variante == '6' :
+        for i in range(5):
+                ligne = []
+                for j in range(3):
+                    ligne.append('0')
+                grille.append(ligne)
+        grille[2].append('0')    
+    elif variante == '9' or '12':
+        for i in range(7):
+                ligne = []
+                for j in range(3):
+                    ligne.append('0')
+                grille.append(ligne)
+        for i in range (3):
+            grille[3].append('0')
+    else :
+        print('Veuillez réessayer avec 3, 6, 9 ou 12 jetons.')
+                
+    return grille
+
+print(plateau(3))
