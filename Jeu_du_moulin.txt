@@ -1,0 +1,9 @@
+-Variante à 3 jetons :
+0 1 2
+3 4 5
+6 7 8
+-Variante à 6 jetons :
+	
+-Variante à 9 jetons
+-Variante à 12 jetons
+-Variante de Lasker
