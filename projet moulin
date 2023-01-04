@@ -1,0 +1,79 @@
+import random
+
+#création du plateau---------------------------------------------------------------------------------------------------------------------
+
+def cree_plateau(variante) :
+    variante = str(variante)
+    grille = []
+    if variante == '3' :
+        for i in range(3):
+                ligne = []
+                for j in range(3):
+                    ligne.append(0)
+                grille.append(ligne)
+                
+    elif variante == '6' :
+        for i in range(5):
+                ligne = []
+                for j in range(3):
+                    ligne.append(0)
+                grille.append(ligne)
+        grille[2].append(0)
+        
+    elif variante == '9' or variante ==  '12' or variante == 'Lasker':
+        for i in range(7):
+                ligne = []
+                for j in range(3):
+                    ligne.append(0)
+                grille.append(ligne)
+        for i in range (3):
+            grille[3].append(0)
+            
+    else :
+        print('Erreur, veuillez réessayer avec 3, 6, 9, 12 jetons ou avec la variante Lasker.')
+
+    return grille, variante
+
+#fonctions de base-----------------------------------------------------------------------------------------------------------------------
+
+def case_libre(plateau, case) :
+    if plateau[case][0] == 0 :
+        return True
+    else :
+        return False
+
+def place_jeton_1(plateau, case) :
+    if case_libre(plateau, case) :
+        plateau[case][0] = 1
+        return plateau
+    else :
+        return False
+
+def place_jeton_2(plateau, case) :
+    if case_libre(plateau, case) :
+        plateau[case][0] = 2
+        return plateau
+    else :
+        return False
+    
+#phases de jeu---------------------------------------------------------------------------------------------------------------------------
+
+def phase_1_basique(plateau, jetons) :
+    joueur1 = jetons
+    joueur2 = jetons
+    tour_j1 = True
+    while joueur1 > 0 or joueur2 > 0:
+        case = int(input("case ?"))
+        if not(case_libre(plateau, case)) :
+            while not(case_libre(plateau, case)) :
+                case = int(input("case ?"))
+        if tour_j1 == True :
+            place_jeton_1(plateau, case)
+            joueur1 -= 1
+            tour_j1 = False
+        else :
+            place_jeton_2(plateau, case)
+            joueur2 -= 1
+            tour_j1 = True    
+        print(plateau)
+    return plateau
