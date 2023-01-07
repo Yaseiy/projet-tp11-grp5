@@ -1,0 +1,110 @@
+#INITIALISATION VARIABLES:
+#jetons = 9
+#mode = normal ou lasker
+
+
+def menu():
+    '''Le menu peut servir à lancer une partie, modifier les règles et le mode de jeu selon les envies du joueur, ou tout simplement de quitter le jeu.'''
+    mode = True
+    jetons = 9
+    print("==============================")
+    print("=            MENU            =")
+    print("==============================\n")
+    print("Bienvenue dans le jeu du moulin !\n")
+    print("Que souhaitez vous faire ?\n >>>PLAY/RULES/SETTINGS/QUIT\n")
+    choix=input()
+    if choix=="PLAY":
+        play()
+        return True
+    elif choix=="RULES":
+        rules()
+        return True
+    elif choix=="SETTINGS":
+        settings(mode, jetons)
+        return True
+    elif choix=="QUIT":
+        print("\nMerci d'avoir joué !")
+        return False
+    else:
+        print("Erreur de saisie. Veuillez bien choisir.")
+        return True
+
+
+
+
+def rules():
+    print("""
+    Les règles du jeu sont simples.\n
+    Le but est de d'aligner 3 jetons (en ligne, en colonne ou en diagonale). Une fois cela fait, on obtient
+    la possibilité de retirer un jeton a son adversaire. Le premier joueur ayant moins de 3 jetons perd.
+    Les jetons ne peuvent être placés qu'aux endroits assignés, représentés par un ".".
+    Le jeu se décompose en trois phases :
+    -1ère phase dans laquelle chaque joueur déposera ses jetons sur le plateau l'un après l'autre
+    -2ème phase dans laquelle les joueurs pourront déplacer leurs pions d'une case tour après tour
+    -3ème phase qui débute lorsqu'un joueur ne possède plus que 3 jetons. Il peux alors déplacer un jeton à
+    n'importe quel endroit du plateau.\n""")
+    menu()
+    
+def settings(mode, jetons):
+    """Cette fonction permet au joueur de modifier les paramètres de jeu.
+    """
+    
+    mode = True
+    print("""Quel paramètre souhaitez-vous modifier ? Si vous voulez commencez le jeu sans modifier de paramètres, appuyez sur N.
+ >>>MODE/NBR JETONS/RETOUR\n""")
+    choix=input()
+    if choix=="NBR JETONS":
+        print("Le nombre de jetons est de 9. Voulez-vous changer ce nombre ? Y/N")
+        choixC=input()
+        if choixC=="Y":
+            print("Avec combien de jetons voulez-vous jouer ?")
+            nbr_jetons=int(input())
+            if nbr_jetons == 3:
+                print(f"Vous avez choisi de jouer avec 3 jetons.")
+                return mode, 3, True
+            elif nbr_jetons == 6:
+                print(f"Vous avez choisi de jouer avec 6 jetons.")
+                return mode, 6, True
+            elif nbr_jetons == 9:
+                print(f"Vous avez choisi de jouer avec 9 jetons.")
+                return mode, 9, True
+            elif nbr_jetons == 12:
+                print(f"Vous avez choisi de jouer avec 12 jetons.")
+                return mode, 12, True
+            else:
+                print("Veuillez faire un choix entre 3, 6, 9 ou 12 jetons.")
+                return mode, jetons, True
+        elif choixC=="N":
+            print("Vous jouerez donc avec 9 jetons.")
+            return mode, jetons, True
+
+    elif choix=="MODE":
+        if mode:
+            print("Vous jouez en mode NORMAL. Souhaitez-vous changer ? Y/N")
+            choixM=input()
+            if choixM=="N":
+                print("MODE NORMAL ACTIF.\n")
+                return True, jetons, True
+            elif choixM=="Y":
+                print("VARIANTE LASKER ACTIVE.\n")
+                return False, jetons, True
+            else:
+                print("ERREUR DE SAISIE.\n")
+                return mode, jetons, True
+        elif not mode:
+            print("Vous jouez en mode MISÈRE. Souhaitez-vous changer ? Y/N")
+            choixM=input()
+            if choixM=="N":
+                print("MODE MISÈRE ACTIF.\n")
+                return False, jetons, True
+            elif choixM=="Y":
+                mode=False
+                print("MODE NORMAL ACTIF.\n")
+                return True, jetons, True
+    elif choix=="RETOUR":
+                menu()
+    else:
+        return mode, jetons, True
+    
+    
+menu()
