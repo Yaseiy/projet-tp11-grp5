@@ -1,8 +1,3 @@
-#INITIALISATION VARIABLES:
-#jetons = 9
-#mode = normal ou lasker
-
-
 def menu():
     '''Le menu peut servir à lancer une partie, modifier les règles et le mode de jeu selon les envies du joueur, ou tout simplement de quitter le jeu.'''
     mode = True
@@ -11,16 +6,14 @@ def menu():
     print("=            MENU            =")
     print("==============================\n")
     print("Bienvenue dans le jeu du moulin !\n")
-    print("Que souhaitez vous faire ?\n >>>PLAY/RULES/SETTINGS/QUIT\n")
+    print("Que souhaitez vous faire ?\n >>>PLAY/RULES/QUIT\n")
     choix=input()
     if choix=="PLAY":
-        play()
+        plateau()
+        init(nbr_jeton, grille)
         return True
     elif choix=="RULES":
         rules()
-        return True
-    elif choix=="SETTINGS":
-        settings(mode, jetons)
         return True
     elif choix=="QUIT":
         print("\nMerci d'avoir joué !")
@@ -42,69 +35,95 @@ def rules():
     -1ère phase dans laquelle chaque joueur déposera ses jetons sur le plateau l'un après l'autre
     -2ème phase dans laquelle les joueurs pourront déplacer leurs pions d'une case tour après tour
     -3ème phase qui débute lorsqu'un joueur ne possède plus que 3 jetons. Il peux alors déplacer un jeton à
-    n'importe quel endroit du plateau.\n""")
+    n'importe quel endroit du plateau.
+    Les cases libres sont representées par un "1" et celles dans lesquelles il n'est pas possible de poser
+    un pion par des "0".\n""")
+    
     menu()
     
-def settings(mode, jetons):
-    """Cette fonction permet au joueur de modifier les paramètres de jeu.
-    """
     
-    mode = True
-    print("""Quel paramètre souhaitez-vous modifier ? Si vous voulez commencez le jeu sans modifier de paramètres, appuyez sur N.
- >>>MODE/NBR JETONS/RETOUR\n""")
-    choix=input()
-    if choix=="NBR JETONS":
-        print("Le nombre de jetons est de 9. Voulez-vous changer ce nombre ? Y/N")
-        choixC=input()
-        if choixC=="Y":
-            print("Avec combien de jetons voulez-vous jouer ?")
-            nbr_jetons=int(input())
-            if nbr_jetons == 3:
-                print(f"Vous avez choisi de jouer avec 3 jetons.")
-                return mode, 3, True
-            elif nbr_jetons == 6:
-                print(f"Vous avez choisi de jouer avec 6 jetons.")
-                return mode, 6, True
-            elif nbr_jetons == 9:
-                print(f"Vous avez choisi de jouer avec 9 jetons.")
-                return mode, 9, True
-            elif nbr_jetons == 12:
-                print(f"Vous avez choisi de jouer avec 12 jetons.")
-                return mode, 12, True
-            else:
-                print("Veuillez faire un choix entre 3, 6, 9 ou 12 jetons.")
-                return mode, jetons, True
-        elif choixC=="N":
-            print("Vous jouerez donc avec 9 jetons.")
-            return mode, jetons, True
+    
+def plateau():
+    grille3= [[1, 1, 1],
+          [1, 1, 1],
+          [1, 1, 1]]
 
-    elif choix=="MODE":
-        if mode:
-            print("Vous jouez en mode NORMAL. Souhaitez-vous changer ? Y/N")
-            choixM=input()
-            if choixM=="N":
-                print("MODE NORMAL ACTIF.\n")
-                return True, jetons, True
-            elif choixM=="Y":
-                print("VARIANTE LASKER ACTIVE.\n")
-                return False, jetons, True
+    grille6= [[1, 0, 1, 0, 1],
+          [0, 1, 1, 1, 0],
+          [1, 1, 0, 1, 1],
+          [0, 1, 1, 1, 0],
+          [1, 0, 1, 0, 1]]
+          
+    grille9= [[1, 0, 0, 1, 0, 0, 1],
+          [0, 1, 0, 1, 0, 1, 0],
+          [0, 0, 1, 1, 1, 0, 0],
+          [1, 1, 1, 0, 1, 1, 1],
+          [0, 0, 1, 1, 1, 0, 0],
+          [0, 1, 0, 1, 0, 1, 0],
+          [1, 0, 0, 1, 0, 0, 1]]
+
+    grille12= [[1, 0, 0, 1, 0, 0, 1],
+           [0, 1, 0, 1, 0, 1, 0],
+           [0, 0, 1, 1, 1, 0, 0],
+           [1, 1, 1, 0, 1, 1, 1],
+           [0, 0, 1, 1, 1, 0, 0],
+           [0, 1, 0, 1, 0, 1, 0],
+           [1, 0, 0, 1, 0, 0, 1]]
+    choix=int(input("Avec combien de jetons voulez vous jouer ? 3, 6, 9 ou 12"))
+    if choix == 3:
+        for i in range(len(grille3)):
+            print(grille3[i])
+        grille3=init(6, grille3)
+    elif choix == 6:
+        for i in range(len(grille6)):
+            print(grille6[i])
+        grille6=init(12, grille6)
+    elif choix == 9:
+        for i in range(len(grille9)):
+            print(grille9[i])
+        grille9=init(18, grille9)
+    elif choix == 12:
+        for i in range(len(grille12)):
+            print(grille12[i])
+        grille12=init(24, grille12)
+        
+        
+def init(nbr_jeton, grille):
+    if nbr_jeton==6:
+        max=3
+    elif nbr_jeton==12:
+        max=5
+    elif nbr_jeton==18:
+        max=7
+    elif nbr_jeton==24:
+        max=7
+    joueur = 0
+    while(nbr_jeton != 0):
+        if joueur == 0:
+            ligne = int(input("Au tour du joueur 1 : A quelle ligne voulez-vous poser votre pion ? "))
+            colonne = int(input("A quelle colonne ? "))
+            if ligne>max or colonne>max or ligne<0 or colonne<0:
+                print("Impossible")
+            elif grille[colonne-1][ligne-1] == 0 or grille[colonne-1][ligne-1] == "B" or grille[colonne-1][ligne-1] == "N":
+                print("Impossible")
             else:
-                print("ERREUR DE SAISIE.\n")
-                return mode, jetons, True
-        elif not mode:
-            print("Vous jouez en mode MISÈRE. Souhaitez-vous changer ? Y/N")
-            choixM=input()
-            if choixM=="N":
-                print("MODE MISÈRE ACTIF.\n")
-                return False, jetons, True
-            elif choixM=="Y":
-                mode=False
-                print("MODE NORMAL ACTIF.\n")
-                return True, jetons, True
-    elif choix=="RETOUR":
-                menu()
-    else:
-        return mode, jetons, True
-    
-    
+                grille[colonne-1][ligne-1] = "B"
+                joueur = 1
+                nbr_jeton-=1
+                for i in range (len(grille)):
+                    print(grille[i])
+        else:
+            ligne = int(input("Au tour du joueur 2 : A quelle ligne voulez-vous poser votre pion ?"))
+            colonne = int(input("A quelle colonne ? "))
+            if grille[colonne-1][ligne-1] == 0 or grille[colonne-1][ligne-1] == "B" or grille[colonne-1][ligne-1] == "N":
+                print("Impossible")
+            else:
+                grille[colonne-1][ligne-1] = "N"
+                joueur = 0
+                nbr_jeton-=1
+                for i in range (len(grille)):
+                    print(grille[i])
+    return grille
+
+      
 menu()
